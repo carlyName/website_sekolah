@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>Kos Bahagia - Kost Sejahtera & Mudah Bayar</title>
+  <!-- Font & Tailwind CDN (lightweight, no script conflicts) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* custom overrides & class naming for clarity */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #FFF8EC;
+      color: #546B41;
+    }
+
+    /* custom color utilities untuk menjaga konsistensi tema */
+    .bg-cream-custom { background-color: #FFF8EC; }
+    .bg-dark-green { background-color: #546B41; }
+    .bg-mid-green { background-color: #99AD7A; }
+    .bg-sand-custom { background-color: #DCCCAC; }
+    .text-dark-green { color: #546B41; }
+    .text-mid-green { color: #99AD7A; }
+    .text-cream-custom { color: #FFF8EC; }
+    .border-sand-custom { border-color: #DCCCAC; }
+    .hover-bg-mid-green:hover { background-color: #99AD7A; }
+    .hover-text-mid-green:hover { color: #99AD7A; }
+    
+    .btn-primary-custom {
+      background-color: #546B41;
+      color: #FFF8EC;
+      transition: all 0.3s ease;
+    }
+    .btn-primary-custom:hover {
+      background-color: #99AD7A;
+      transform: translateY(-1px);
+    }
+    .btn-outline-custom {
+      border: 2px solid #546B41;
+      color: #546B41;
+      transition: all 0.3s ease;
+    }
+    .btn-outline-custom:hover {
+      background-color: #546B41;
+      color: #FFF8EC;
+    }
+    
+    /* horizontal scroll untuk fasilitas */
+    .facility-scroll {
+      display: flex;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      gap: 1.25rem;
+      scrollbar-width: thin;
+      scrollbar-color: #99AD7A #DCCCAC;
+      padding-bottom: 0.5rem;
+    }
+    .facility-scroll::-webkit-scrollbar {
+      height: 6px;
+    }
+    .facility-scroll::-webkit-scrollbar-track {
+      background: #DCCCAC;
+      border-radius: 8px;
+    }
+    .facility-scroll::-webkit-scrollbar-thumb {
+      background: #546B41;
+      border-radius: 8px;
+    }
+    
+    .map-container iframe {
+      width: 100%;
+      border-radius: 24px;
+      border: 1px solid #DCCCAC;
+      box-shadow: 0 10px 25px -5px rgba(0,0,0,0.05);
+    }
+    
+    .feature-card {
+      transition: all 0.2s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+    }
+    
+    /* Smooth scroll untuk anchor links */
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* Navbar styles yang lebih baik untuk responsive */
+    .nav-container {
+      background-color: #FFF8EC;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+    
+    .nav-menu {
+      display: flex;
+      gap: 2rem;
+    }
+    
+    /* Mobile menu - tanpa JS, pakai checkbox trick */
+    #menu-toggle {
+      display: none;
+    }
+    
+    .menu-icon {
+      display: none;
+      cursor: pointer;
+      font-size: 28px;
+      user-select: none;
+    }
+    
+    /* Style untuk logo lingkaran */
+    .navbar-logo-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    
+    .navbar_logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+      display: block;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .brand-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+    }
+    
+    @media (min-width: 768px) {
+      .navbar_logo {
+        width: 45px;
+        height: 45px;
+      }
+      .brand-text {
+        font-size: 1.75rem;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .nav-menu {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background-color: #FFF8EC;
+        flex-direction: column;
+        gap: 0;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        border-top: 1px solid #DCCCAC;
+      }
+      
+      .nav-menu a {
+        padding: 1rem 1.5rem;
+        border-bottom: 1px solid #DCCCAC;
+        width: 100%;
+        text-align: left;
+      }
+      
+      .nav-menu a:last-child {
+        border-bottom: none;
+      }
+      
+      .menu-icon {
+        display: block;
+      }
+      
+      #menu-toggle:checked ~ .nav-menu {
+        display: flex;
+      }
+      
+      .nav-buttons {
+        display: flex;
+        gap: 0.75rem;
+      }
+      
+      .nav-buttons button {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+      }
+      
+      .navbar_logo {
+        width: 35px;
+        height: 35px;
+      }
+      
+      .brand-text {
+        font-size: 1.25rem;
+      }
+    }
+    
+    @media (max-width: 480px) {
+      .nav-buttons button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.75rem;
+      }
+      
+      .navbar_logo {
+        width: 30px;
+        height: 30px;
+      }
+      
+      .brand-text {
+        font-size: 1.1rem;
+      }
+    }
+    
+    /* Styling untuk nav links */
+    .nav-menu a {
+      font-weight: 500;
+      transition: color 0.2s ease;
+      text-decoration: none;
+      color: #546B41;
+    }
+    
+    .nav-menu a:hover {
+      color: #99AD7A;
+    }
+    
+    .section-padding {
+      scroll-margin-top: 80px;
+    }
+  </style>
+</head>
+<body class="bg-cream-custom">
+  
+  <!-- ====================== NAVBAR RESPONSIVE ====================== -->
+  <div class="nav-container">
+    <nav class="flex flex-wrap justify-between items-center px-6 md:px-10 py-4 max-w-7xl mx-auto relative">
+      
+      <!-- Checkbox untuk mobile menu toggle (tanpa JS) -->
+      <input type="checkbox" id="menu-toggle">
+      <label for="menu-toggle" class="menu-icon">☰</label>
+      
+      <div class="navbar-logo-wrapper">
+        <img class="navbar_logo" src="/gambar/logo.png" alt="Logo Kos Bahagia">
+        <div class="brand-text">
+          Kos<span class="text-mid-green">Bahagia</span>
+        </div>
+      </div>
+      
+      <!-- Menu Navigasi -->
+      <div class="nav-menu">
+        <a href="#beranda">Beranda</a>
+        <a href="#lokasi">Lokasi</a>
+        <a href="#fasilitas">Fasilitas</a>
+        <a href="#fitur">Fitur</a>
+        <a href="#informasi-kontak">Informasi Kontak</a>
+      </div>
+      
+      <!-- Tombol Login/Daftar -->
+      <div class="nav-buttons flex gap-3">
+        <button class="btn-primary-custom px-5 py-2 rounded-full font-semibold text-sm md:text-base">Login</button>
+        <button class="border-2 border-dark-green text-dark-green px-5 py-2 rounded-full font-semibold text-sm md:text-base hover:bg-dark-green hover:text-cream-custom transition">Daftar</button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- =============== 1. BERANDA / INFORMASI KOS BAHAGIA =============== -->
+  <section id="beranda" class="max-w-7xl mx-auto px-6 md:px-10 mt-8 section-padding">
+    <div class="grid md:grid-cols-2 gap-8 items-center bg-white/40 rounded-3xl p-5 md:p-7 shadow-sm border border-sand-custom">
+      <div class="rounded-2xl overflow-hidden shadow-lg">
+        <img 
+          src="/gambar/gambar kos.png" 
+          alt="Fasilitas kos Bahagia - area hunian nyaman" 
+          class="w-full h-full object-cover transition duration-500"
+        >
+      </div>
+      <!-- informasi kos -->
+      <div class="space-y-4">
+        <h2 class="text-3xl md:text-4xl font-bold text-dark-green">🏡 Kos Bahagia</h2>
+        <p class="text-lg leading-relaxed opacity-90">Kos premium dan asri khusus mahasiswa & pekerja. Lokasi strategis dekat kampus, pusat kuliner, dan area nyaman untuk belajar. Dikelola dengan sistem digital untuk pembayaran mudah & transparan.</p>
+        <div class="flex flex-wrap gap-4 pt-2">
+          <div class="flex items-center gap-2"><span class="text-mid-green text-xl">✓</span> <span>24 Jam Akses</span></div>
+          <div class="flex items-center gap-2"><span class="text-mid-green text-xl">✓</span> <span>Lingkungan Aman</span></div>
+          <div class="flex items-center gap-2"><span class="text-mid-green text-xl">✓</span> <span>Parkiran Luas</span></div>
+          <div class="flex items-center gap-2"><span class="text-mid-green text-xl">✓</span> <span>Digital Payment</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== 2. LOKASI KOS (MAPS) =============== -->
+  <section id="lokasi" class="max-w-7xl mx-auto px-6 md:px-10 mt-16 section-padding">
+    <div class="text-center mb-6">
+      <span class="bg-sand-custom px-4 py-1 rounded-full text-dark-green text-sm font-semibold inline-block">📍 Lokasi Strategis</span>
+      <h2 class="text-2xl md:text-3xl font-bold mt-3 text-dark-green">Akses Mudah & Nyaman</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto mt-1">Jalan Sam Ratulangi - Kampus 2 Universitas Flores, Ende, Nusa Tenggara Timur</p>
+    </div>
+    <div class="map-container w-full rounded-2xl overflow-hidden shadow-md">
+      <iframe 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126766.53573185445!2d121.6148992!3d-8.8396657!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2db478b5d29c8227%3A0x4036e5b7c8f3b5ed!2sJl.%20Sam%20Ratulangi%2C%20Kota%20Ende%2C%20Nusa%20Tenggara%20Tim.!5e0!3m2!1sid!2sid!4v1715000000000!5m2!1sid!2sid" 
+        width="100%" 
+        height="380" 
+        style="border:0; border-radius: 1.5rem;" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade"
+        title="Peta lokasi Kos Bahagia di Jalan Sam Ratulangi - Kampus 2 Universitas Flores">
+      </iframe>
+    </div>
+    <p class="text-sm text-dark-green/70 mt-3 flex items-center gap-1"><span>📍</span> Jalan Sam Ratulangi, tepat di kawasan Kampus 2 Universitas Flores, dekat pertokoan dan halte</p>
+  </section>
+
+  <!-- =============== 3. FASILITAS (scroll horizontal) =============== -->
+  <section id="fasilitas" class="max-w-7xl mx-auto px-6 md:px-10 mt-20 section-padding">
+    <div class="flex justify-between items-end flex-wrap mb-6">
+      <div>
+        <h2 class="text-2xl md:text-3xl font-bold text-dark-green">Fasilitas Unggulan</h2>
+        <p class="text-dark-green/70">Nikmati kenyamanan kost dengan perlengkapan lengkap</p>
+      </div>
+    </div>
+    <!-- horizontal scroll container -->
+    <div class="facility-scroll pb-3">
+      <div class="flex-shrink-0 w-48 bg-white rounded-2xl shadow-md p-5 text-center border border-sand-custom transition hover:shadow-lg">
+        <div class="text-5xl mb-3">🛏️</div>
+        <h3 class="font-bold text-lg text-dark-green">Tempat Tidur</h3>
+        <p class="text-xs text-gray-500 mt-1">Spring bed nyaman + sprei bersih</p>
+      </div>
+      <div class="flex-shrink-0 w-48 bg-white rounded-2xl shadow-md p-5 text-center border border-sand-custom">
+        <div class="text-5xl mb-3">💧</div>
+        <h3 class="font-bold text-lg text-dark-green">Air 24 Jam</h3>
+        <p class="text-xs text-gray-500">Air bersih & tekanan stabil</p>
+      </div>
+      <div class="flex-shrink-0 w-48 bg-white rounded-2xl shadow-md p-5 text-center border border-sand-custom">
+        <div class="text-5xl mb-3">⚡</div>
+        <h3 class="font-bold text-lg text-dark-green">Listrik</h3>
+        <p class="text-xs text-gray-500">Daya penuh, stop kontak masing-masing</p>
+      </div>
+      <div class="flex-shrink-0 w-48 bg-white rounded-2xl shadow-md p-5 text-center border border-sand-custom">
+        <div class="text-5xl mb-3">📶</div>
+        <h3 class="font-bold text-lg text-dark-green">WiFi Cepat</h3>
+        <p class="text-xs text-gray-500">Kecepatan tinggi, cocok kuliah online</p>
+      </div>
+      <div class="flex-shrink-0 w-48 bg-white rounded-2xl shadow-md p-5 text-center border border-sand-custom">
+        <div class="text-5xl mb-3">🗄️</div>
+        <h3 class="font-bold text-lg text-dark-green">Lemari Pribadi</h3>
+        <p class="text-xs text-gray-500">Ruang simpan luas & aman</p>
+      </div>
+      <div class="flex-shrink-0 w-48 bg-white rounded-2xl shadow-md p-5 text-center border border-sand-custom">
+        <div class="text-5xl mb-3">🌀</div>
+        <h3 class="font-bold text-lg text-dark-green">Kipas Angin</h3>
+        <p class="text-xs text-gray-500">Sirkulasi udara sejuk</p>
+      </div>
+      <div class="flex-shrink-0 w-48 bg-white rounded-2xl shadow-md p-5 text-center border border-sand-custom opacity-80">
+        <div class="text-5xl mb-3">🧺</div>
+        <h3 class="font-bold text-lg text-dark-green">Laundry Area</h3>
+        <p class="text-xs text-gray-500">Tersedia ruang jemur</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =============== 4. FITUR WEBSITE =============== -->
+  <section id="fitur" class="max-w-7xl mx-auto px-6 md:px-10 mt-20 section-padding">
+    <div class="text-center max-w-3xl mx-auto">
+      <span class="bg-dark-green text-cream-custom text-sm px-4 py-1 rounded-full font-semibold">Platform Pintar</span>
+      <h2 class="text-3xl md:text-4xl font-bold mt-3 text-dark-green">Fitur Lengkap Kost Bahagia</h2>
+      <p class="text-dark-green/80 mt-2">Solusi pembayaran kos digital, notifikasi WA, virtual account, hingga bukti transaksi otomatis.</p>
+    </div>
+
+    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-7 mt-12">
+      <div class="feature-card bg-white p-6 rounded-2xl shadow-md border border-sand-custom">
+        <h3 class="text-xl font-bold text-dark-green">Notifikasi WA Otomatis</h3>
+        <p class="text-dark-green/70 text-sm mt-2">Pengingat tagihan lewat WhatsApp, langsung dari "Kos Bahagia" → buka pesan dan proses bayar.</p>
+      </div>
+      <div class="feature-card bg-white p-6 rounded-2xl shadow-md border border-sand-custom">
+        <h3 class="text-xl font-bold text-dark-green">Akses Multi-Role</h3>
+        <p class="text-dark-green/70 text-sm mt-2">Login sebagai Penyewa atau Pemilik. Centang persetujuan & langsung kelola tagihan.</p>
+      </div>
+      <div class="feature-card bg-white p-6 rounded-2xl shadow-md border border-sand-custom">
+        <h3 class="text-xl font-bold text-dark-green">Dashboard & Pilih Tagihan</h3>
+        <p class="text-dark-green/70 text-sm mt-2">Ringkasan semua tagihan dan Tombol "Bayar" untuk memilih tagihan yang akan dilunasi.</p>
+      </div>
+      <div class="feature-card bg-white p-6 rounded-2xl shadow-md border border-sand-custom">
+        <h3 class="text-xl font-bold text-dark-green">Detail Tagihan & Metode</h3>
+        <p class="text-dark-green/70 text-sm mt-2">Periksa rincian tagihan, pilih periode, dan pilih metode pembayaran (VA, QRIS, Transfer).</p>
+      </div>
+      <div class="feature-card bg-white p-6 rounded-2xl shadow-md border border-sand-custom">
+        <h3 class="text-xl font-bold text-dark-green">Virtual Account (VA)</h3>
+        <p class="text-dark-green/70 text-sm mt-2">Sistem generate kode VA, tombol "Salin" untuk memudahkan pembayaran via M-Banking/ATM.</p>
+      </div>
+      <div class="feature-card bg-white p-6 rounded-2xl shadow-md border border-sand-custom">
+        <h3 class="text-xl font-bold text-dark-green">Bukti Transaksi Digital</h3>
+        <p class="text-dark-green/70 text-sm mt-2">Konfirmasi otomatis, unduh bukti pembayaran sebagai arsip dan menghindari miskomunikasi.</p>
+      </div>
+    </div>
+
+    <div class="mt-16 bg-dark-green/5 rounded-2xl p-6 md:p-8 border-l-8 border-mid-green">
+      <p class="italic text-dark-green/80 text-base md:text-lg">"Main flow-nya sudah bagus dan sesuai tujuan, memudahkan pembayaran biaya kos, menghindari miskomunikasi. Proses transparan, praktis, nyaman." — <strong>Azriel (Penyewa)</strong></p>
+      <p class="italic text-dark-green/80 text-base md:text-lg mt-3">"Alurnya menjawab kebutuhan, pembayaran mudah, plus bukti pembayaran sangat membantu." — <strong>Fameliya & Ona</strong></p>
+      <div class="flex flex-wrap gap-2 mt-4">
+        <span class="bg-sand-custom text-dark-green text-xs px-3 py-1 rounded-full">⭐ Main flow penyewa & pemilik</span>
+        <span class="bg-sand-custom text-dark-green text-xs px-3 py-1 rounded-full">⭐ Warna lebih menonjol & mudah dibaca</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ====================== FOOTER DENGAN INFORMASI KONTAK ====================== -->
+  <footer id="informasi-kontak" class="mt-24 border-t border-sand-custom pt-12 pb-8 bg-cream-custom section-padding">
+    <div class="max-w-7xl mx-auto px-6 md:px-10">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+        <!-- kolom brand -->
+        <div class="col-span-1">
+          <div class="text-2xl font-bold tracking-tight">Kos<span class="text-mid-green">Bahagia</span></div>
+          <p class="text-sm text-dark-green/70 mt-3">Bayar kost tanpa ribet, transparan, dan cepat. Solusi modern untuk anak kost dan pemilik kos.</p>
+        </div>
+
+        <!-- kontak -->
+        <div>
+          <h4 class="font-bold text-dark-green text-lg mb-4">Hubungi Kami</h4>
+          <ul class="space-y-2 text-dark-green/80 text-sm">
+            <li class="flex gap-2 items-center">📞 <span>+62 812 3456 3478</span></li>
+            <li class="flex gap-2 items-center">✉️ <span>info@kosbahagia.id</span></li>
+            <li class="flex gap-2 items-center">📍 <span>Jl. Sam Ratulangi, Kampus 2 Universitas Flores, Ende</span></li>
+            <li class="flex gap-2 items-center">⏰ <span>Layanan 24/7 (Chat & Call)</span></li>
+          </ul>
+        </div>
+
+        <!-- sosial media resmi -->
+        <div>
+          <h4 class="font-bold text-dark-green text-lg mb-4">Media Sosial</h4>
+          <ul class="space-y-2 text-dark-green/80 text-sm">
+            <li><a href="#" class="hover:text-mid-green flex items-center gap-2">📱 Instagram: @kosbahagia.official</a></li>
+            <li><a href="#" class="hover:text-mid-green flex items-center gap-2">📘 Facebook: KosBahagiaFlores</a></li>
+            <li><a href="#" class="hover:text-mid-green flex items-center gap-2">🐦 Twitter: @KosBahagia_ID</a></li>
+            <li><a href="#" class="hover:text-mid-green flex items-center gap-2">🎵 Tiktok: @kos.bahagia</a></li>
+          </ul>
+        </div>
+
+        <!-- email & newsletter -->
+        <div>
+          <h4 class="font-bold text-dark-green text-lg mb-4">Kirim Pesan</h4>
+          <p class="text-sm text-dark-green/70">Dapatkan info promo & pengingat tagihan via email</p>
+          <div class="mt-3 flex flex-col gap-2">
+            <input type="email" placeholder="Email kamu" class="px-4 py-2 rounded-full border border-sand-custom bg-white text-sm focus:outline-none focus:ring-1 focus:ring-mid-green">
+            <button class="bg-dark-green text-cream-custom px-4 py-2 rounded-full text-sm font-semibold hover:bg-mid-green transition">Berlangganan</button>
+          </div>
+          <p class="text-[11px] text-dark-green/50 mt-3">Email resmi: support@kosbahagia.id</p>
+        </div>
+      </div>
+      <div class="border-t border-sand-custom mt-10 pt-6 text-center text-dark-green/60 text-sm">
+        <p>&copy; 2026 by KosBahagia. Seluruh hak cipta dilindungi. Didesain untuk kemudahan penghuni & pemilik kos.</p>
+        <p class="mt-1 text-xs">Sistem pembayaran digital & notifikasi cerdas</p>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
